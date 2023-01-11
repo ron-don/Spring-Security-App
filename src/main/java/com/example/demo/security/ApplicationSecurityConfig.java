@@ -16,6 +16,8 @@ import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 
+import java.util.concurrent.TimeUnit;
+
 import static com.example.demo.security.ApplicationUserRole.*;
 
 
@@ -43,8 +45,13 @@ public class ApplicationSecurityConfig {
                 .anyRequest()
                 .authenticated()
                 .and()
-                .formLogin();
-
+                .formLogin()
+                .loginPage("/login").permitAll()
+                .defaultSuccessUrl("/courses", true)
+                .and()
+                .rememberMe()
+                    .tokenValiditySeconds((int) TimeUnit.DAYS.toSeconds(21))
+                    .key("somethingverysecured");//defaults is 2 weeks
         return http.build();
     }
 
