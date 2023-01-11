@@ -43,7 +43,7 @@ public class ApplicationSecurityConfig {
                 .anyRequest()
                 .authenticated()
                 .and()
-                .httpBasic(Customizer.withDefaults());
+                .formLogin();
 
         return http.build();
     }
